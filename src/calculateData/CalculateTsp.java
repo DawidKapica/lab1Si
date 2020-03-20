@@ -8,12 +8,9 @@ import alghoritms.mutation.InversionMutation;
 import alghoritms.mutation.MutationAlghoritm;
 import alghoritms.selection.SelectionAlghoritm;
 import alghoritms.selection.TournamentSelection;
-import parser.Coordinate;
 import parser.Coordinates;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class CalculateTsp {
 
@@ -48,8 +45,6 @@ public class CalculateTsp {
         ArrayList<Coordinates> oldPopulation = new ArrayList<Coordinates>(newPopulation);
 
         ArrayList<Evaluation> evaluationArrayList = new ArrayList<Evaluation>();
-//        Evaluation firstEvaluation = evaluate(initializePopulation);
-//        evaluationArrayList.add(firstEvaluation);
         for (int i = 0; i < numberOfIteration; i++) {
             ArrayList<Coordinates> selectedIndividuals = select(newPopulation);
             ArrayList<Coordinates> crossedIndividuals = cross(selectedIndividuals);
@@ -62,9 +57,8 @@ public class CalculateTsp {
             oldPopulation = newPopulation;
             newPopulation.addAll(mutatedIndividuals);
             newPopulation.removeAll(selectedIndividuals);
-            newPopulation = fillPopulation(newPopulation, oldPopulation);
-//            initializePopulation.addAll(mutatedIndividuals);
-            System.out.println(oldPopulation.size());
+            newPopulation = fillPopulation(newPopulation, selectedIndividuals);
+
         }
     }
 
@@ -72,7 +66,9 @@ public class CalculateTsp {
         ArrayList<Coordinates> fillArray = new ArrayList<Coordinates>(oldPopulation);
 
         while (fillArray.size() < populationSize){
-            fillArray.add(oldPopulation.get((int)(Math.random() * oldPopulation.size()-1)));
+//            fillArray.add(oldPopulation.get((int)(Math.random() * oldPopulation.size()-1)));
+            fillArray.add(selectionAlghoritm.selection(oldPopulation));
+
         }
         return fillArray;
     }
@@ -126,6 +122,8 @@ public class CalculateTsp {
                 max = route;
             }
         }
+
+
         average = average / populationSize;
         return new Evaluation(max, average, min);
     }

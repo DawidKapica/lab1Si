@@ -41,16 +41,14 @@ public class InversionMutation implements MutationAlghoritm {
                 indexSecondElement--;
             }
 
-            System.out.println(indexFirstElement);
-            System.out.println(indexSecondElement);
 
-            //zamieniane są w pętli indexy first z second dlatego w if second odpowiada first i odwrotnie
-            if (indexSecondElement == 0) {
-                copy.getCoordinatesArray().set(coordinates.getCoordinatesArray().size()-1, copy.getCoordinatesArray().get(0));
-            }
-            if (indexFirstElement == coordinates.getCoordinatesArray().size() - 1) {
-                copy.getCoordinatesArray().set(0, copy.getCoordinatesArray().get(coordinates.getCoordinatesArray().size()-1));
-            }
+//            //zamieniane są w pętli indexy first z second dlatego w if second odpowiada first i odwrotnie
+//            if (indexSecondElement == 0) {
+//                copy.getCoordinatesArray().set(coordinates.getCoordinatesArray().size()-1, copy.getCoordinatesArray().get(0));
+//            }
+//            if (indexFirstElement == coordinates.getCoordinatesArray().size() - 1) {
+//                copy.getCoordinatesArray().set(0, copy.getCoordinatesArray().get(coordinates.getCoordinatesArray().size()-1));
+//            }
 
             return copy;
 

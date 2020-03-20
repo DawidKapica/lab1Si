@@ -15,5 +15,13 @@ public class TspEAInitializer {
             coordinatesArrayList.add(tspRandomAlghoritm.generateRandomPath(routeCoordinates));
         }
         return  coordinatesArrayList;
+
+//        ArrayList<Coordinates> coordinatesArrayList = new ArrayList<Coordinates>();
+//        TspRandomAlghoritm tspRandomAlghoritm = new TspRandomAlghoritm();
+//        TspGreedyAlgorithm tspGreedyAlgorithm = new TspGreedyAlgorithm();
+//        for(int i = 0; i < numberOfCoordinatesIndividual; i++) {
+//            coordinatesArrayList.add(tspGreedyAlgorithm.generateGreedyPath(routeCoordinates, (int)(Math.random() * (routeCoordinates.getCoordinatesArray().size()-1))));
+//        }
+//        return  coordinatesArrayList;
     }
 }

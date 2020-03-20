@@ -31,7 +31,7 @@ public class TspGreedyAlgorithm {
             actualPoint = nextPoint;
         }
 
-        greedyCoordinatesArray.add(startPoint);
+//        greedyCoordinatesArray.add(startPoint);
 
         return new Coordinates(greedyCoordinatesArray, routeCoordinates.getFileType());
 

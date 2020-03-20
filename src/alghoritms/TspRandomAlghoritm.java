@@ -31,7 +31,7 @@ public class TspRandomAlghoritm {
             randormCoordinatesArray.add(coordinatesArray.get(pointNumber));
             coordinatesArray.remove(pointNumber);
         }
-        randormCoordinatesArray.add(startPoint);
+//        randormCoordinatesArray.add(startPoint);
         return new Coordinates(randormCoordinatesArray, routeCoordinates.getFileType());
     }
 
