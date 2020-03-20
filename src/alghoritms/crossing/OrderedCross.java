@@ -9,8 +9,8 @@ import java.util.List;
 public class OrderedCross implements CrossingAlghoritm {
 
     public Coordinates cross(Coordinates firstParent, Coordinates secondParent) {
-        int indexFirstElement= (int)(Math.random() * (firstParent.getCoordinatesArray().size()-1));
-        int indexSecondElement= (int)(Math.random() * (firstParent.getCoordinatesArray().size()-1));
+        int indexFirstElement= (int)(Math.random() * (firstParent.getCoordinatesArray().size()));
+        int indexSecondElement= (int)(Math.random() * (firstParent.getCoordinatesArray().size()));
 
         if (indexFirstElement > indexSecondElement) {
             int temp = indexFirstElement;

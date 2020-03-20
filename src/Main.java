@@ -12,9 +12,9 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         Parser Parser = new Parser();
-        Coordinates coordinatesData = Parser.parse("berlin11_modified.tsp");
+//        Coordinates coordinatesData = Parser.parse("berlin11_modified.tsp");
 //        Coordinates coordinatesData = Parser.parse("kroA150.tsp");
-//        Coordinates coordinatesData = Parser.parse("berlin52.tsp");
+        Coordinates coordinatesData = Parser.parse("berlin52.tsp");
 
 
 //        CalculateGreedy calculateGreedyArray = new CalculateGreedy();
@@ -28,12 +28,12 @@ public class Main {
 
 
 
-        CalculateTsp calculateTsp = new CalculateTsp(coordinatesData, 100);
+        CalculateTsp calculateTsp = new CalculateTsp(coordinatesData, 200);
         calculateTsp.calculate(100000);
 
         TspEAInitializer tspEAInitializer = new TspEAInitializer();
         ArrayList<Coordinates> coordinatesArrayList = new ArrayList<Coordinates>();
-        coordinatesArrayList = tspEAInitializer.initialize(coordinatesData, 50);
+        coordinatesArrayList = tspEAInitializer.initialize(coordinatesData, 100);
 
 
 

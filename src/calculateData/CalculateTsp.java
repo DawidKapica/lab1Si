@@ -8,6 +8,7 @@ import alghoritms.mutation.InversionMutation;
 import alghoritms.mutation.MutationAlghoritm;
 import alghoritms.selection.SelectionAlghoritm;
 import alghoritms.selection.TournamentSelection;
+import parser.Coordinate;
 import parser.Coordinates;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class CalculateTsp {
     private Coordinates bestCoordinates;
     private final double crossoverPx = 0.7;
     private final double mutationPM = 0.1;
-    private int numberOfIndividualsForSelection = 5;
+    private int numberOfIndividualsForSelection = 20;
     private int populationSize;
 
     private CrossingAlghoritm crossingAlghoritm;
@@ -46,20 +47,40 @@ public class CalculateTsp {
 
         ArrayList<Evaluation> evaluationArrayList = new ArrayList<Evaluation>();
         for (int i = 0; i < numberOfIteration; i++) {
-            ArrayList<Coordinates> selectedIndividuals = select(newPopulation);
-            ArrayList<Coordinates> crossedIndividuals = cross(selectedIndividuals);
-            ArrayList<Coordinates> mutatedIndividuals = mutate(crossedIndividuals);
+//            ArrayList<Coordinates> selectedIndividuals = select(oldPopulation);
+//            ArrayList<Coordinates> crossedIndividuals = cross(selectedIndividuals);
+//            ArrayList<Coordinates> mutatedIndividuals = mutate(crossedIndividuals);
 
-            Evaluation evaluate = evaluate(mutatedIndividuals);
-             System.out.println(evaluate);
+//            Evaluation evaluate = evaluate(mutatedIndividuals);
 //            evaluationArrayList.add(evaluate);
 //            initializePopulation = mutatedIndividuals;
+//            newPopulation.addAll(mutatedIndividuals);
+//            newPopulation.removeAll(selectedIndividuals);
+//            mutatedIndividuals = fillPopulation(mutatedIndividuals, selectedIndividuals);
+//            oldPopulation = newPopulation;
+//            System.out.println(newPopulation.size());
+
+
+            newPopulation = generateNewPopulation(oldPopulation);
             oldPopulation = newPopulation;
-            newPopulation.addAll(mutatedIndividuals);
-            newPopulation.removeAll(selectedIndividuals);
-            newPopulation = fillPopulation(newPopulation, selectedIndividuals);
+
+            Evaluation evaluate = evaluate(newPopulation);
+            System.out.println(evaluate);
+
 
         }
+    }
+
+    private ArrayList<Coordinates> generateNewPopulation(ArrayList<Coordinates> oldPopulation) {
+        ArrayList<Coordinates> coordinatesArrayList = new ArrayList<Coordinates>();
+        ArrayList<Coordinates> selectedIndividuals = select(oldPopulation);
+        ArrayList<Coordinates> crossedIndividuals = cross(selectedIndividuals);
+        ArrayList<Coordinates> mutatedIndividuals = mutate(crossedIndividuals);
+        coordinatesArrayList.addAll(mutatedIndividuals);
+        ArrayList<Coordinates> correct = fillPopulationCorrect(coordinatesArrayList, oldPopulation);
+
+        return  correct;
+
     }
 
     private ArrayList<Coordinates> fillPopulation(ArrayList<Coordinates> newPopulation, ArrayList<Coordinates> oldPopulation){
@@ -71,6 +92,29 @@ public class CalculateTsp {
 
         }
         return fillArray;
+    }
+
+    private ArrayList<Coordinates> fillPopulationCorrect(ArrayList<Coordinates> newPopulation, ArrayList<Coordinates> oldPopulation) {
+        ArrayList<Coordinates> correct = new ArrayList<Coordinates>(newPopulation);
+        while (newPopulation.size() < populationSize) {
+            newPopulation.add(findBest(oldPopulation));
+        }
+        return correct;
+    }
+
+    private Coordinates findBest(ArrayList<Coordinates> population) {
+        double length = calculateAlghoritm.calculateLenght(population.get(0));
+        Coordinates best = population.get(0);
+
+        for(int i = 1; i < population.size(); i++) {
+            double lengthSearch = calculateAlghoritm.calculateLenght(population.get(i));
+            if (lengthSearch < length) {
+                length = lengthSearch;
+                best = population.get(i);
+            }
+        }
+
+        return best;
     }
 
     public ArrayList<Coordinates> select(ArrayList<Coordinates> population) {
@@ -113,7 +157,7 @@ public class CalculateTsp {
         double max = 0;
 
         for (int i = 0; i < population.size() - 1; i++) {
-            Double route = calculateAlghoritm.calculateLenght(population.get(i));
+            double route = calculateAlghoritm.calculateLenght(population.get(i));
             average = average + route;
             if (route < min) {
                 min = route;

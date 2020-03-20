@@ -9,8 +9,8 @@ import java.util.List;
 public class InversionMutation implements MutationAlghoritm {
 
     public Coordinates mutation(Coordinates coordinates) {
-        int indexFirstElement= (int)(Math.random() * (coordinates.getCoordinatesArray().size()-1));
-        int indexSecondElement= (int)(Math.random() * (coordinates.getCoordinatesArray().size()-1));
+        int indexFirstElement= (int)(Math.random() * (coordinates.getCoordinatesArray().size()));
+        int indexSecondElement= (int)(Math.random() * (coordinates.getCoordinatesArray().size()));
 
         if (indexFirstElement > indexSecondElement) {
             int temp = indexFirstElement;
