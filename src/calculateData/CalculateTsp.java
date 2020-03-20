@@ -6,6 +6,7 @@ import alghoritms.crossing.CrossingAlghoritm;
 import alghoritms.crossing.OrderedCross;
 import alghoritms.mutation.InversionMutation;
 import alghoritms.mutation.MutationAlghoritm;
+import alghoritms.selection.RouletteSelection;
 import alghoritms.selection.SelectionAlghoritm;
 import alghoritms.selection.TournamentSelection;
 import parser.Coordinate;
@@ -36,7 +37,8 @@ public class CalculateTsp {
         this.mapCoordinate = mapCoordinates;
         this.populationSize = populationSize;
 
-        selectionAlghoritm = new TournamentSelection(numberOfIndividualsForSelection);
+//        selectionAlghoritm = new TournamentSelection(numberOfIndividualsForSelection);
+        selectionAlghoritm = new RouletteSelection();
         crossingAlghoritm = new OrderedCross();
         mutationAlghoritm = new InversionMutation();
     }
@@ -75,13 +77,12 @@ public class CalculateTsp {
         ArrayList<Coordinates> coordinatesArrayList = new ArrayList<Coordinates>();
         ArrayList<Coordinates> selectedIndividuals = select(oldPopulation);
         ArrayList<Coordinates> crossedIndividuals = cross(selectedIndividuals);
-//        ArrayList<Coordinates> mutatedIndividuals = mutate(crossedIndividuals);
-        coordinatesArrayList.addAll(crossedIndividuals);
+        ArrayList<Coordinates> mutatedIndividuals = mutate(crossedIndividuals);
+        coordinatesArrayList.addAll(mutatedIndividuals);
         ArrayList<Coordinates> correct = fillPopulationCorrect(coordinatesArrayList, oldPopulation);
-        ArrayList<Coordinates> mutatedIndividuals = mutate(correct);
 
 
-        return  mutatedIndividuals;
+        return  correct;
 
     }
 
@@ -132,10 +133,13 @@ public class CalculateTsp {
     private ArrayList<Coordinates> cross(ArrayList<Coordinates> selectedIndividuals) {
         ArrayList<Coordinates> crossedIndividuals = new ArrayList<Coordinates>();
         for(int i = 0; i < selectedIndividuals.size() ; i++){
-            int randomIndex = (int) (Math.random()*selectedIndividuals.size());
-            if(Math.random() <= crossoverPx){
+            int randomIndex = 0;
+            while (randomIndex == i) {
+                randomIndex = (int) (Math.random()*selectedIndividuals.size());
+            }
+            if(Math.random() <= crossoverPx) {
                 crossedIndividuals.add(crossingAlghoritm.cross(selectedIndividuals.get(randomIndex), selectedIndividuals.get(i)));
-            }else{
+            } else {
                 crossedIndividuals.add(selectedIndividuals.get(i));
             }
         }

@@ -1,6 +1,9 @@
+import alghoritms.CalculateAlghoritm;
 import alghoritms.TspEAInitializer;
 import alghoritms.crossing.OrderedCross;
 import alghoritms.mutation.InversionMutation;
+import alghoritms.mutation.SwapMutation;
+import alghoritms.selection.RouletteSelection;
 import calculateData.CalculateGreedy;
 import calculateData.CalculateRandom;
 import calculateData.CalculateTsp;
@@ -12,10 +15,10 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         Parser Parser = new Parser();
-//        Coordinates coordinatesData = Parser.parse("berlin11_modified.tsp");
-        Coordinates coordinatesData = Parser.parse("kroA150.tsp");
+        Coordinates coordinatesData = Parser.parse("berlin11_modified.tsp");
+//        Coordinates coordinatesData = Parser.parse("kroA150.tsp");
 //        Coordinates coordinatesData = Parser.parse("berlin52.tsp");
-
+//
 
 //        CalculateGreedy calculateGreedyArray = new CalculateGreedy();
 //        CalculateRandom calculateRandomArray = new CalculateRandom();
@@ -29,13 +32,17 @@ public class Main {
 
 
         CalculateTsp calculateTsp = new CalculateTsp(coordinatesData, 400);
-        calculateTsp.calculate(100000);
+        calculateTsp.calculate(1000);
 
-//        TspEAInitializer tspEAInitializer = new TspEAInitializer();
-//        ArrayList<Coordinates> coordinatesArrayList = new ArrayList<Coordinates>();
-//        coordinatesArrayList = tspEAInitializer.initialize(coordinatesData, 100);
+        TspEAInitializer tspEAInitializer = new TspEAInitializer();
+        ArrayList<Coordinates> coordinatesArrayList = new ArrayList<Coordinates>();
+        coordinatesArrayList = tspEAInitializer.initialize(coordinatesData, 10);
 
-
+//        CalculateAlghoritm calculateAlghoritm = new CalculateAlghoritm();
+//
+//
+//        RouletteSelection rouletteSelection = new RouletteSelection();
+//        System.out.println(calculateAlghoritm.calculateLenght(rouletteSelection.selection(coordinatesArrayList)));
 
 
 //        for (int i = 0; i < coordinatesArrayList.size(); i++) {
@@ -64,9 +71,9 @@ public class Main {
 //        System.out.println(coordinatesArrayList.get(1));
 //        System.out.println();
 //        System.out.println();
-////        for(int i = 0; i < coordinatesArrayList.size(); i++) {
-////            System.out.println(coordinatesArrayList.get(i).getCoordinatesArray().size());
-////        }
+//        for(int i = 0; i < coordinatesArrayList.size(); i++) {
+//            System.out.println(coordinatesArrayList.get(i).getCoordinatesArray().size());
+//        }
 //        System.out.print(x);
 
 //        InversionMutation inversionMutation = new InversionMutation();
@@ -74,5 +81,11 @@ public class Main {
 //
 //        Coordinates x = inversionMutation.mutation(coordinatesArrayList.get(0));
 //        System.out.println(x);
+
+//        SwapMutation swapMutation = new SwapMutation();
+//        System.out.println(coordinatesArrayList.get(0).toString());
+//        Coordinates x = swapMutation.mutation(coordinatesArrayList.get(0));
+//        System.out.println(x.toString());
+
     }
 }
