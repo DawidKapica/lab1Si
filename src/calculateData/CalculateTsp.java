@@ -22,7 +22,7 @@ public class CalculateTsp {
     private Coordinates bestCoordinates;
     private final double crossoverPx = 0.7;
     private final double mutationPM = 0.1;
-    private int numberOfIndividualsForSelection = 20;
+    private int numberOfIndividualsForSelection = 40;
     private int populationSize;
 
     private CrossingAlghoritm crossingAlghoritm;
@@ -75,11 +75,13 @@ public class CalculateTsp {
         ArrayList<Coordinates> coordinatesArrayList = new ArrayList<Coordinates>();
         ArrayList<Coordinates> selectedIndividuals = select(oldPopulation);
         ArrayList<Coordinates> crossedIndividuals = cross(selectedIndividuals);
-        ArrayList<Coordinates> mutatedIndividuals = mutate(crossedIndividuals);
-        coordinatesArrayList.addAll(mutatedIndividuals);
+//        ArrayList<Coordinates> mutatedIndividuals = mutate(crossedIndividuals);
+        coordinatesArrayList.addAll(crossedIndividuals);
         ArrayList<Coordinates> correct = fillPopulationCorrect(coordinatesArrayList, oldPopulation);
+        ArrayList<Coordinates> mutatedIndividuals = mutate(correct);
 
-        return  correct;
+
+        return  mutatedIndividuals;
 
     }
 
