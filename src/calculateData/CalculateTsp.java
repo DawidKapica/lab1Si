@@ -12,8 +12,12 @@ import alghoritms.selection.SelectionAlghoritm;
 import alghoritms.selection.TournamentSelection;
 import parser.Coordinate;
 import parser.Coordinates;
+import parser.WriterToCsv;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CalculateTsp {
 
@@ -24,12 +28,16 @@ public class CalculateTsp {
     private Coordinates bestCoordinates;
     private final double crossoverPx = 0.7;
     private final double mutationPM = 0.1;
-    private int numberOfIndividualsForSelection = 5;
+    private int numberOfIndividualsForSelection = 10;
     private int populationSize;
 
     private CrossingAlghoritm crossingAlghoritm;
     private MutationAlghoritm mutationAlghoritm;
     private SelectionAlghoritm selectionAlghoritm;
+
+    private String csvFileName = "ExampleFileName.csv";
+
+    private WriterToCsv writer;
 
     public CalculateTsp(Coordinates mapCoordinates, int populationSize) {
         tspEAInitializer = new TspEAInitializer();
@@ -41,37 +49,36 @@ public class CalculateTsp {
         selectionAlghoritm = new TournamentSelection(numberOfIndividualsForSelection);
 //        selectionAlghoritm = new RouletteSelection();
         crossingAlghoritm = new OrderedCross();
-        mutationAlghoritm = new SwapMutation();
+        mutationAlghoritm = new InversionMutation();
+
+        this.writer = new WriterToCsv();
     }
 
-    public void calculate(int numberOfIteration) {
+
+
+    public ArrayList<Evaluation> calculate(int numberOfIteration) {
         ArrayList<Coordinates> newPopulation = tspEAInitializer.initialize(mapCoordinate, populationSize);
         ArrayList<Coordinates> oldPopulation = new ArrayList<Coordinates>(newPopulation);
 
         ArrayList<Evaluation> evaluationArrayList = new ArrayList<Evaluation>();
         for (int i = 0; i < numberOfIteration; i++) {
-//            ArrayList<Coordinates> selectedIndividuals = select(oldPopulation);
-//            ArrayList<Coordinates> crossedIndividuals = cross(selectedIndividuals);
-//            ArrayList<Coordinates> mutatedIndividuals = mutate(crossedIndividuals);
-
-//            Evaluation evaluate = evaluate(mutatedIndividuals);
-//            evaluationArrayList.add(evaluate);
-//            initializePopulation = mutatedIndividuals;
-//            newPopulation.addAll(mutatedIndividuals);
-//            newPopulation.removeAll(selectedIndividuals);
-//            mutatedIndividuals = fillPopulation(mutatedIndividuals, selectedIndividuals);
-//            oldPopulation = newPopulation;
-//            System.out.println(newPopulation.size());
-
 
             newPopulation = generateNewPopulation(oldPopulation);
             oldPopulation = newPopulation;
 
             Evaluation evaluate = evaluate(newPopulation);
+            writer.addTextToConvert(i + ";" + evaluate.getMax() + ";" + evaluate.getAverage() + ";" + evaluate.getMin());
+            evaluationArrayList.add(evaluate);
             System.out.println(evaluate);
-
-
         }
+
+        try{
+            writer.createCsv();
+        } catch (IOException e){
+            System.out.println(Arrays.toString(e.getStackTrace()));
+        }
+
+        return evaluationArrayList;
     }
 
     private ArrayList<Coordinates> generateNewPopulation(ArrayList<Coordinates> oldPopulation) {
@@ -82,27 +89,15 @@ public class CalculateTsp {
         coordinatesArrayList.addAll(mutatedIndividuals);
         ArrayList<Coordinates> correct = fillPopulationCorrect(coordinatesArrayList, oldPopulation);
 
-
         return  correct;
-
-    }
-
-    private ArrayList<Coordinates> fillPopulation(ArrayList<Coordinates> newPopulation, ArrayList<Coordinates> oldPopulation){
-        ArrayList<Coordinates> fillArray = new ArrayList<Coordinates>(oldPopulation);
-
-        while (fillArray.size() < populationSize){
-//            fillArray.add(oldPopulation.get((int)(Math.random() * oldPopulation.size()-1)));
-            fillArray.add(selectionAlghoritm.selection(oldPopulation));
-
-        }
-        return fillArray;
     }
 
     private ArrayList<Coordinates> fillPopulationCorrect(ArrayList<Coordinates> newPopulation, ArrayList<Coordinates> oldPopulation) {
         ArrayList<Coordinates> correct = new ArrayList<Coordinates>(newPopulation);
-        while (newPopulation.size() < populationSize) {
-            newPopulation.add(findBest(oldPopulation));
+        while (correct.size() < populationSize) {
+            correct.add(findBest(oldPopulation));
         }
+
         return correct;
     }
 
@@ -117,19 +112,19 @@ public class CalculateTsp {
                 best = population.get(i);
             }
         }
-
         return best;
     }
 
     public ArrayList<Coordinates> select(ArrayList<Coordinates> population) {
         ArrayList<Coordinates> coordinatesArrayList = new ArrayList<Coordinates>();
+        ArrayList<Coordinates> copy = new ArrayList<Coordinates>(population);
         for (int i = 0; i < numberOfIndividualsForSelection; i++) {
-            coordinatesArrayList.add(selectionAlghoritm.selection(population));
+            Coordinates coords = selectionAlghoritm.selection(copy);
+            coordinatesArrayList.add(coords);
+            copy.remove(coords);
         }
         return coordinatesArrayList;
     }
-
-
 
     private ArrayList<Coordinates> cross(ArrayList<Coordinates> selectedIndividuals) {
         ArrayList<Coordinates> crossedIndividuals = new ArrayList<Coordinates>();
@@ -140,11 +135,9 @@ public class CalculateTsp {
             }
             if(Math.random() <= crossoverPx) {
                 ArrayList<Coordinates> coords = new ArrayList<Coordinates>(crossingAlghoritm.cross(selectedIndividuals.get(randomIndex), selectedIndividuals.get(i)));
-//                crossedIndividuals.add(crossingAlghoritm.cross(selectedIndividuals.get(randomIndex), selectedIndividuals.get(i)));
                 crossedIndividuals.addAll(coords);
 
             } else {
-//                crossedIndividuals.add(selectedIndividuals.get(i));
                 crossedIndividuals.addAll(selectedIndividuals);
             }
         }
@@ -167,7 +160,7 @@ public class CalculateTsp {
         double min = Double.MAX_VALUE;
         double max = 0;
 
-        for (int i = 0; i < population.size() - 1; i++) {
+        for (int i = 0; i < population.size(); i++) {
             double route = calculateAlghoritm.calculateLenght(population.get(i));
             average = average + route;
             if (route < min) {
@@ -177,9 +170,67 @@ public class CalculateTsp {
                 max = route;
             }
         }
-
-
         average = average / populationSize;
         return new Evaluation(max, average, min);
+    }
+
+    public void setCsvFileName(String fileName) {
+        this.csvFileName = fileName;
+    }
+
+    public Coordinates getMapCoordinate () {
+        return mapCoordinate;
+    }
+
+    public void setMapCoordinate (Coordinates mapCoordinate) {
+        this.mapCoordinate = mapCoordinate;
+    }
+
+    public double getCrossoverPx () {
+        return crossoverPx;
+    }
+
+    public double getMutationPM () {
+        return mutationPM;
+    }
+
+    public int getNumberOfIndividualsForSelection () {
+        return numberOfIndividualsForSelection;
+    }
+
+    public void setNumberOfIndividualsForSelection (int numberOfIndividualsForSelection) {
+        this.numberOfIndividualsForSelection = numberOfIndividualsForSelection;
+    }
+
+    public int getPopulationSize () {
+        return populationSize;
+    }
+
+    public void setPopulationSize (int populationSize) {
+        this.populationSize = populationSize;
+    }
+
+    public CrossingAlghoritm getCrossingAlghoritm () {
+        return crossingAlghoritm;
+    }
+
+    public void setCrossingAlghoritm (CrossingAlghoritm crossingAlghoritm) {
+        this.crossingAlghoritm = crossingAlghoritm;
+    }
+
+    public MutationAlghoritm getMutationAlghoritm () {
+        return mutationAlghoritm;
+    }
+
+    public void setMutationAlghoritm (MutationAlghoritm mutationAlghoritm) {
+        this.mutationAlghoritm = mutationAlghoritm;
+    }
+
+    public SelectionAlghoritm getSelectionAlghoritm () {
+        return selectionAlghoritm;
+    }
+
+    public void setSelectionAlghoritm (SelectionAlghoritm selectionAlghoritm) {
+        this.selectionAlghoritm = selectionAlghoritm;
     }
 }

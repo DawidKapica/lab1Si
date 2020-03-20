@@ -22,7 +22,7 @@ public class SwapMutation implements MutationAlghoritm {
             copy.getCoordinatesArray().set(indexFirstElement, copy.getCoordinatesArray().get(indexSecondElement));
             copy.getCoordinatesArray().set(indexSecondElement, temp);
 
-            return copy;
+//            return copy;
 
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();

@@ -30,28 +30,14 @@ public class RouletteSelection implements SelectionAlghoritm{
             fitness.set(i, (fitness.get(i)/sumFitness+fitness.get(i-1)));
         }
         if (rouletteNumber <= fitness.get(0)) {
-
-//            System.out.println(rouletteNumber);
-//            System.out.println(fitness.toString());
-//            System.out.println(fitnessArrayToPrint.toString());
-
             return new Coordinates(pop.get(0).getCoordinatesArray(), pop.get(0).getFileType());
         } else {
             for(int i = 1; i < fitness.size(); i++) {
                 if (rouletteNumber < fitness.get(i) && rouletteNumber > fitness.get(i-1)) {
-
-//                    System.out.println(rouletteNumber);
-//                    System.out.println(fitness.toString());
-//                    System.out.println(fitnessArrayToPrint.toString());
-
                     return new Coordinates(pop.get(i).getCoordinatesArray(), pop.get(i).getFileType());
                 }
             }
         }
-
-//        System.out.println(rouletteNumber);
-//        System.out.println(fitness.toString());
-//        System.out.println(fitnessArrayToPrint.toString());
 
         return new Coordinates(pop.get(pop.size()-1).getCoordinatesArray(), pop.get(pop.size()-1).getFileType());
     }

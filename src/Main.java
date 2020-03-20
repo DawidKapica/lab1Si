@@ -16,86 +16,16 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
         Parser Parser = new Parser();
+
         Coordinates coordinatesData = Parser.parse("berlin11_modified.tsp");
-//        Coordinates coordinatesData = Parser.parse("kroA100.tsp");
 //        Coordinates coordinatesData = Parser.parse("berlin52.tsp");
-//
+//        Coordinates coordinatesData = Parser.parse("kroA100.tsp");
+//        Coordinates coordinatesData = Parser.parse("fl417.tsp");
 
-//        CalculateGreedy calculateGreedyArray = new CalculateGreedy();
-//        CalculateRandom calculateRandomArray = new CalculateRandom();
-//        ArrayList greedyArray = calculateGreedyArray.calculateGreedyData(coordinatesData);
-//        ArrayList randomArray = calculateRandomArray.calculateRandomData(coordinatesData, 10000);
-//        System.out.println("GREEDY ALGORTHM");
-//        System.out.println("best: " + greedyArray.get(0) + ", worst: " + greedyArray.get(1) + ", avg: " + greedyArray.get(2));
-//        System.out.println("RANDOM ALGORTHM");
-//        System.out.println("best: " + randomArray.get(0) + ", worst: " + randomArray.get(1) + ", avg: " + randomArray.get(2));
+        CalculateTsp calculateTsp = new CalculateTsp(coordinatesData, 400);
+        calculateTsp.calculate(10000);
 
 
-
-//        CalculateTsp calculateTsp = new CalculateTsp(coordinatesData, 100);
-//        calculateTsp.calculate(500);
-
-        TspEAInitializer tspEAInitializer = new TspEAInitializer();
-        ArrayList<Coordinates> coordinatesArrayList = new ArrayList<Coordinates>();
-        coordinatesArrayList = tspEAInitializer.initialize(coordinatesData, 5);
-
-//        CalculateAlghoritm calculateAlghoritm = new CalculateAlghoritm();
-//
-//
-//        RouletteSelection rouletteSelection = new RouletteSelection();
-//        System.out.println(calculateAlghoritm.calculateLenght(rouletteSelection.selection(coordinatesArrayList)));
-
-
-//        for (int i = 0; i < coordinatesArrayList.size(); i++) {
-//            System.out.print(coordinatesArrayList.get(i).toString());
-//            System.out.print("__");
-//
-//        }
-//        System.out.println(coordinatesArrayList.get(0));
-//        System.out.println();
-//        System.out.println();
-//        System.out.println(coordinatesArrayList.get(1));
-//        System.out.println();
-//        System.out.println("_______");
-
-
-        PartiallyMatchedCross partiallyMatchedCross = new PartiallyMatchedCross();
-        ArrayList<Coordinates> partailCoords = partiallyMatchedCross.cross(coordinatesArrayList.get(0), coordinatesArrayList.get(1));
-        Coordinates x = partailCoords.get(1);
-        System.out.println(coordinatesArrayList.get(0));
-        System.out.println();
-        System.out.println();
-        System.out.println(coordinatesArrayList.get(1));
-        System.out.println();
-        System.out.println();
-//        for(int i = 0; i < coordinatesArrayList.size(); i++) {
-//            System.out.println(coordinatesArrayList.get(i).getCoordinatesArray().size());
-//        }
-        System.out.print(x);
-
-//        OrderedCross orderedCross = new OrderedCross();
-//        Coordinates x = orderedCross.cross(coordinatesArrayList.get(0), coordinatesArrayList.get(1));
-//        System.out.println(coordinatesArrayList.get(0));
-//        System.out.println();
-//        System.out.println();
-//        System.out.println(coordinatesArrayList.get(1));
-//        System.out.println();
-//        System.out.println();
-//        for(int i = 0; i < coordinatesArrayList.size(); i++) {
-//            System.out.println(coordinatesArrayList.get(i).getCoordinatesArray().size());
-//        }
-//        System.out.print(x);
-
-//        InversionMutation inversionMutation = new InversionMutation();
-//        System.out.println(coordinatesArrayList.get(0));
-//
-//        Coordinates x = inversionMutation.mutation(coordinatesArrayList.get(0));
-//        System.out.println(x);
-
-//        SwapMutation swapMutation = new SwapMutation();
-//        System.out.println(coordinatesArrayList.get(0).toString());
-//        Coordinates x = swapMutation.mutation(coordinatesArrayList.get(0));
-//        System.out.println(x.toString());
 
     }
 }

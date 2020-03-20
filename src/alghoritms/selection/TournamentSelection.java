@@ -15,6 +15,10 @@ public class TournamentSelection implements SelectionAlghoritm {
         calculateAlghoritm = new CalculateAlghoritm();
     }
 
+    public TournamentSelection() {
+
+    }
+
     public Coordinates selection(ArrayList<Coordinates> pop) {
         ArrayList<Coordinates> nCoordinates = new ArrayList<Coordinates>();
         ArrayList<Coordinates> copy = new ArrayList<Coordinates>(pop);
@@ -36,5 +40,13 @@ public class TournamentSelection implements SelectionAlghoritm {
         }
 
         return bestCoordinates;
+    }
+
+    public int getN () {
+        return N;
+    }
+
+    public void setN (int n) {
+        N = n;
     }
 }

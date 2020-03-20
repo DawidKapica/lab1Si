@@ -23,8 +23,11 @@ public class Evaluation {
 
     @Override
     public String toString() {
-        return " max=" + max +
-                ", average=" + average +
-                ", min=" + min;
+        String returnString = "";
+        returnString = returnString + String.format("%-30s", " max=" + max) +
+                String.format("%-30s", " average=" + average) +
+                String.format("%-30s", " min=" + min);
+
+        return returnString;
     }
 }
