@@ -8,7 +8,7 @@ import java.util.List;
 
 public class OrderedCross implements CrossingAlghoritm {
 
-    public Coordinates cross(Coordinates firstParent, Coordinates secondParent) {
+    public ArrayList<Coordinates> cross(Coordinates firstParent, Coordinates secondParent) {
         int indexFirstElement= (int)(Math.random() * (firstParent.getCoordinatesArray().size()));
         int indexSecondElement= (int)(Math.random() * (firstParent.getCoordinatesArray().size()));
 
@@ -32,12 +32,13 @@ public class OrderedCross implements CrossingAlghoritm {
 
             ArrayList<Coordinate> doZwrotu = new ArrayList<Coordinate>(subList);
             Coordinates crossCoordinates = new Coordinates(doZwrotu, firstParent.getFileType());
-            return  crossCoordinates;
+            ArrayList<Coordinates> coords = new ArrayList<Coordinates>();
+            coords.add(crossCoordinates);
+            return  coords;
 
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-
 
         return null;
     }

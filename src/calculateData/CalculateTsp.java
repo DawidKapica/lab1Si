@@ -6,6 +6,7 @@ import alghoritms.crossing.CrossingAlghoritm;
 import alghoritms.crossing.OrderedCross;
 import alghoritms.mutation.InversionMutation;
 import alghoritms.mutation.MutationAlghoritm;
+import alghoritms.mutation.SwapMutation;
 import alghoritms.selection.RouletteSelection;
 import alghoritms.selection.SelectionAlghoritm;
 import alghoritms.selection.TournamentSelection;
@@ -23,7 +24,7 @@ public class CalculateTsp {
     private Coordinates bestCoordinates;
     private final double crossoverPx = 0.7;
     private final double mutationPM = 0.1;
-    private int numberOfIndividualsForSelection = 40;
+    private int numberOfIndividualsForSelection = 5;
     private int populationSize;
 
     private CrossingAlghoritm crossingAlghoritm;
@@ -37,10 +38,10 @@ public class CalculateTsp {
         this.mapCoordinate = mapCoordinates;
         this.populationSize = populationSize;
 
-//        selectionAlghoritm = new TournamentSelection(numberOfIndividualsForSelection);
-        selectionAlghoritm = new RouletteSelection();
+        selectionAlghoritm = new TournamentSelection(numberOfIndividualsForSelection);
+//        selectionAlghoritm = new RouletteSelection();
         crossingAlghoritm = new OrderedCross();
-        mutationAlghoritm = new InversionMutation();
+        mutationAlghoritm = new SwapMutation();
     }
 
     public void calculate(int numberOfIteration) {
@@ -138,9 +139,13 @@ public class CalculateTsp {
                 randomIndex = (int) (Math.random()*selectedIndividuals.size());
             }
             if(Math.random() <= crossoverPx) {
-                crossedIndividuals.add(crossingAlghoritm.cross(selectedIndividuals.get(randomIndex), selectedIndividuals.get(i)));
+                ArrayList<Coordinates> coords = new ArrayList<Coordinates>(crossingAlghoritm.cross(selectedIndividuals.get(randomIndex), selectedIndividuals.get(i)));
+//                crossedIndividuals.add(crossingAlghoritm.cross(selectedIndividuals.get(randomIndex), selectedIndividuals.get(i)));
+                crossedIndividuals.addAll(coords);
+
             } else {
-                crossedIndividuals.add(selectedIndividuals.get(i));
+//                crossedIndividuals.add(selectedIndividuals.get(i));
+                crossedIndividuals.addAll(selectedIndividuals);
             }
         }
         return crossedIndividuals;
