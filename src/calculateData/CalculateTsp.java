@@ -4,6 +4,7 @@ import alghoritms.CalculateAlghoritm;
 import alghoritms.TspEAInitializer;
 import alghoritms.crossing.CrossingAlghoritm;
 import alghoritms.crossing.OrderedCross;
+import alghoritms.crossing.PartiallyMatchedCross;
 import alghoritms.mutation.InversionMutation;
 import alghoritms.mutation.MutationAlghoritm;
 import alghoritms.mutation.SwapMutation;
@@ -25,10 +26,10 @@ public class CalculateTsp {
     private CalculateAlghoritm calculateAlghoritm;
     private Coordinates mapCoordinate;
 
-    private Coordinates bestCoordinates;
-    private final double crossoverPx = 0.7;
-    private final double mutationPM = 0.1;
-    private int numberOfIndividualsForSelection = 10;
+    private double crossoverPx = 0.7;
+
+    private double mutationPM = 0.55;
+    private int numberOfIndividualsForSelection = 60;
     private int populationSize;
 
     private CrossingAlghoritm crossingAlghoritm;
@@ -46,9 +47,10 @@ public class CalculateTsp {
         this.mapCoordinate = mapCoordinates;
         this.populationSize = populationSize;
 
-        selectionAlghoritm = new TournamentSelection(numberOfIndividualsForSelection);
-//        selectionAlghoritm = new RouletteSelection();
-        crossingAlghoritm = new OrderedCross();
+//        selectionAlghoritm = new TournamentSelection(numberOfIndividualsForSelection);
+        selectionAlghoritm = new RouletteSelection();
+//        crossingAlghoritm = new OrderedCross();
+        crossingAlghoritm = new PartiallyMatchedCross();
         mutationAlghoritm = new InversionMutation();
 
         this.writer = new WriterToCsv();
@@ -58,6 +60,7 @@ public class CalculateTsp {
 
     public ArrayList<Evaluation> calculate(int numberOfIteration) {
         ArrayList<Coordinates> newPopulation = tspEAInitializer.initialize(mapCoordinate, populationSize);
+//        System.out.println(mapCoordinate.getCoordinatesArray().size());
         ArrayList<Coordinates> oldPopulation = new ArrayList<Coordinates>(newPopulation);
 
         ArrayList<Evaluation> evaluationArrayList = new ArrayList<Evaluation>();
@@ -67,6 +70,7 @@ public class CalculateTsp {
             oldPopulation = newPopulation;
 
             Evaluation evaluate = evaluate(newPopulation);
+            String toPrint = String.format("%-10s", i) + ";" + String.format("%-20s", evaluate.getMax()) + ";" + String.format("%-20s", evaluate.getAverage()) + ";" + String.format("%-20s", evaluate.getMin());
             writer.addTextToConvert(i + ";" + evaluate.getMax() + ";" + evaluate.getAverage() + ";" + evaluate.getMin());
             evaluationArrayList.add(evaluate);
             System.out.println(evaluate);
@@ -170,7 +174,8 @@ public class CalculateTsp {
                 max = route;
             }
         }
-        average = average / populationSize;
+        System.out.println(population.size());
+        average = average / population.size();
         return new Evaluation(max, average, min);
     }
 
@@ -233,4 +238,13 @@ public class CalculateTsp {
     public void setSelectionAlghoritm (SelectionAlghoritm selectionAlghoritm) {
         this.selectionAlghoritm = selectionAlghoritm;
     }
+
+    public void setCrossoverPx (double crossoverPx) {
+        this.crossoverPx = crossoverPx;
+    }
+
+    public void setMutationPM (double mutationPM) {
+        this.mutationPM = mutationPM;
+    }
+
 }

@@ -27,24 +27,26 @@ public class PartiallyMatchedCross implements CrossingAlghoritm {
             indexSecondElement = temp;
         }
 
-        System.out.println(indexFirstElement);
-        System.out.println(indexSecondElement);
-
-        List<Coordinate> sublistFirst = firstParent.getCoordinatesArray().subList(indexFirstElement, indexSecondElement);
-        List<Coordinate> sublistSecond = secondParent.getCoordinatesArray().subList(indexFirstElement, indexSecondElement);
-        System.out.println(sublistFirst.toString());
-        System.out.println(sublistSecond.toString());
-
+//        System.out.println(indexFirstElement);
+//        System.out.println(indexSecondElement);
         Coordinates firstParentCopy = null;
         Coordinates secondParentCopy = null;
-
-
         try {
             firstParentCopy = firstParent.clone();
             secondParentCopy = secondParent.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+
+        List<Coordinate> sublistFirst = firstParentCopy.getCoordinatesArray().subList(indexFirstElement, indexSecondElement);
+        List<Coordinate> sublistSecond = secondParentCopy.getCoordinatesArray().subList(indexFirstElement, indexSecondElement);
+//        System.out.println(sublistFirst.toString());
+//        System.out.println(sublistSecond.toString());
+
+
+//        List<Coordinate> cloneFirstSublist = new ArrayList<Coordinate>(sublistFirst);
+//        List<Coordinate> cloneSecondSublist = new ArrayList<Coordinate>(sublistSecond);
+
 
 //        for(int i = indexFirstElement; i < indexSecondElement; i++) {
 ////            Coordinate temp = new Coordinate(firstParent.getCoordinatesArray().get(i).getX(), firstParent.getCoordinatesArray().get(i).getY());
@@ -64,24 +66,42 @@ public class PartiallyMatchedCross implements CrossingAlghoritm {
 //        }
 
         for (int i = 0; i < sublistFirst.size(); i++) {
-//            Coordinate temp = new Coordinate(firstParent.getCoordinatesArray().get(i+sublistFirst.size()).getX(), firstParent.getCoordinatesArray().get(i+sublistFirst.size()).getY());
-            int index = firstParent.getCoordinatesArray().indexOf(sublistSecond.get(i));
-            System.out.println("index" + index);
-            System.out.println("i+indexFirstElement" + i+indexFirstElement);
+            int index = firstParentCopy.getCoordinatesArray().indexOf(sublistSecond.get(i));
+            int index2 = firstParentCopy.getCoordinatesArray().indexOf(sublistFirst.get(i));
+//            System.out.println(firstParentCopy.toString());
+//            System.out.println(secondParentCopy.toString());
+//            System.out.println(index);
+//            System.out.println(index2);
+//            System.out.println("____");
 
+
+            //wstaw do
             firstParentCopy.getCoordinatesArray().set(index, sublistFirst.get(i));
-            firstParentCopy.getCoordinatesArray().set(i+indexFirstElement, sublistSecond.get(i));
+            firstParentCopy.getCoordinatesArray().set(index2, sublistSecond.get(i));
+
+
 
         }
 
-        for (int i = 0; i < sublistSecond.size(); i++) {
-//            Coordinate temp = new Coordinate(secondParent.getCoordinatesArray().get(i+sublistSecond.size()).getX(), secondParent.getCoordinatesArray().get(i+sublistSecond.size()).getY());
-            int index = secondParent.getCoordinatesArray().indexOf(sublistSecond.get(i));
+//        for (int i = 0; i < sublistFirst.size(); i++) {
+//            System.out.println(sublistFirst.get(i));
+//            System.out.println(secondParentCopy.getCoordinatesArray().toString());
+//            int j = secondParentCopy.getCoordinatesArray().indexOf(sublistFirst.get(i));
+//            secondParentCopy.getCoordinatesArray().set(j, cloneFirstSublist.get(i));
+//            secondParentCopy.getCoordinatesArray().set(indexFirstElement + i, sublistFirst.get(i));
+//        }
 
-            secondParentCopy.getCoordinatesArray().set(index, sublistSecond.get(i));
-            secondParentCopy.getCoordinatesArray().set(i+indexFirstElement, sublistFirst.get(i));
-
-        }
+//        for (int i = 0; i < sublistSecond.size(); i++) {
+////            Coordinate temp = new Coordinate(secondParent.getCoordinatesArray().get(i+sublistSecond.size()).getX(), secondParent.getCoordinatesArray().get(i+sublistSecond.size()).getY());
+//            int index = secondParentCopy.getCoordinatesArray().indexOf(sublistFirst.get(i));
+//            int index2 = firstParentCopy.getCoordinatesArray().indexOf(sublistFirst.get(i));
+//
+////            int index2 = se
+//
+//            secondParentCopy.getCoordinatesArray().set(index, sublistSecond.get(i));
+//            secondParentCopy.getCoordinatesArray().set(index2, sublistFirst.get(i));
+//
+//        }
 
 //        for(int i = indexFirstElement; i < indexSecondElement; i++) {
 //            Coordinate temp = new Coordinate(secondParent.getCoordinatesArray().get(i).getX(), secondParent.getCoordinatesArray().get(i).getY());
@@ -99,8 +119,9 @@ public class PartiallyMatchedCross implements CrossingAlghoritm {
 
         ArrayList<Coordinates> coords = new ArrayList<Coordinates>();
         coords.add(firstParentCopy);
-        coords.add(secondParentCopy);
+//        coords.add(secondParentCopy);
 
+//        System.out.println("++++++++++++");
         return  coords;
     }
 }
