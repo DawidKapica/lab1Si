@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RouletteSelection implements SelectionAlghoritm{
-    private final static int pressure = 8;
+    private final static int pressure = 6;
     @Override
     public Coordinates selection (ArrayList<Coordinates> pop) {
         CalculateAlghoritm calculateAlghoritm = new CalculateAlghoritm();

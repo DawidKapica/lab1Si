@@ -16,7 +16,7 @@ public class WriterToCsv {
     }
 
     public WriterToCsv() {
-        CSV_FILE_NAME = "exampleFileName";
+        CSV_FILE_NAME = "exampleFileName.csv";
     }
 
     public void createCsv() throws IOException {

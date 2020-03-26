@@ -15,9 +15,9 @@ public class TournamentSelection implements SelectionAlghoritm {
         calculateAlghoritm = new CalculateAlghoritm();
     }
 
-    public TournamentSelection() {
-
-    }
+//    public TournamentSelection() {
+//
+//    }
 
     public Coordinates selection(ArrayList<Coordinates> pop) {
         ArrayList<Coordinates> nCoordinates = new ArrayList<Coordinates>();
